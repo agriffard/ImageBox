@@ -1,0 +1,156 @@
+@namespace ImageBox.Components
+
+<div class="imagebox-gallery" role="list">
+    @for (var index = 0; index < Items.Count; index++)
+    {
+        var item = Items[index];
+        <button type="button"
+                class="imagebox-card"
+                role="listitem"
+                aria-label="Open image @(index + 1)"
+                @onclick="() => Open(index)">
+            <img src="@GetThumbnail(item)" alt="@item.Alt" loading="lazy" />
+        </button>
+    }
+</div>
+
+@if (_isOpen && _currentIndex >= 0)
+{
+    var current = Items[_currentIndex];
+    <div class="imagebox-lightbox"
+         tabindex="0"
+         role="dialog"
+         aria-modal="true"
+         aria-label="Image lightbox"
+         @onkeydown="OnKeyDown"
+         @ref="_lightboxRef">
+        <button type="button" class="imagebox-close" aria-label="Close" @onclick="Close">×</button>
+        <button type="button" class="imagebox-nav imagebox-nav-prev" aria-label="Previous" @onclick="Previous">❮</button>
+
+        <figure>
+            <img src="@current.ImageUrl"
+                 alt="@current.Alt"
+                 style="transform: scale(@_zoomLevel.ToString(System.Globalization.CultureInfo.InvariantCulture));" />
+            @if (!string.IsNullOrWhiteSpace(current.Caption))
+            {
+                <figcaption>@current.Caption</figcaption>
+            }
+        </figure>
+
+        <div class="imagebox-toolbar">
+            <button type="button" aria-label="Zoom out" @onclick="ZoomOut">−</button>
+            <span>@(_zoomLevel * 100) %</span>
+            <button type="button" aria-label="Zoom in" @onclick="ZoomIn">+</button>
+        </div>
+
+        <button type="button" class="imagebox-nav imagebox-nav-next" aria-label="Next" @onclick="Next">❯</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IReadOnlyList<ImageBoxItem> Items { get; set; } = Array.Empty<ImageBoxItem>();
+
+    [Parameter]
+    public float MinZoom { get; set; } = 1f;
+
+    [Parameter]
+    public float MaxZoom { get; set; } = 3f;
+
+    [Parameter]
+    public float ZoomStep { get; set; } = 0.25f;
+
+    private bool _isOpen;
+    private int _currentIndex = -1;
+    private float _zoomLevel = 1f;
+    private ElementReference _lightboxRef;
+    private bool _focusLightbox;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusLightbox)
+        {
+            _focusLightbox = false;
+            await _lightboxRef.FocusAsync();
+        }
+    }
+
+    private void Open(int index)
+    {
+        if (Items.Count == 0)
+        {
+            return;
+        }
+
+        _currentIndex = Math.Clamp(index, 0, Items.Count - 1);
+        _zoomLevel = MinZoom;
+        _isOpen = true;
+        _focusLightbox = true;
+    }
+
+    private void Close()
+    {
+        _isOpen = false;
+        _currentIndex = -1;
+    }
+
+    private void Next()
+    {
+        if (Items.Count == 0)
+        {
+            return;
+        }
+
+        _currentIndex = (_currentIndex + 1 + Items.Count) % Items.Count;
+        _zoomLevel = MinZoom;
+    }
+
+    private void Previous()
+    {
+        if (Items.Count == 0)
+        {
+            return;
+        }
+
+        _currentIndex = (_currentIndex - 1 + Items.Count) % Items.Count;
+        _zoomLevel = MinZoom;
+    }
+
+    private void ZoomIn() => _zoomLevel = MathF.Min(MaxZoom, _zoomLevel + ZoomStep);
+
+    private void ZoomOut() => _zoomLevel = MathF.Max(MinZoom, _zoomLevel - ZoomStep);
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "Escape":
+                Close();
+                break;
+            case "ArrowRight":
+                Next();
+                break;
+            case "ArrowLeft":
+                Previous();
+                break;
+            case "+":
+            case "=":
+                ZoomIn();
+                break;
+            case "-":
+            case "_":
+                ZoomOut();
+                break;
+            case "Home":
+                _currentIndex = 0;
+                _zoomLevel = MinZoom;
+                break;
+            case "End":
+                _currentIndex = Items.Count - 1;
+                _zoomLevel = MinZoom;
+                break;
+        }
+    }
+
+    private static string GetThumbnail(ImageBoxItem item) => item.ThumbnailUrl ?? item.ImageUrl;
+}

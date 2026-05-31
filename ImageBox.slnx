@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ImageBox.Sample/ImageBox.Sample.csproj" />
+  <Project Path="ImageBox.Tests/ImageBox.Tests.csproj" />
+  <Project Path="ImageBox/ImageBox.csproj" />
+</Solution>
