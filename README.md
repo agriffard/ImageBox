@@ -41,12 +41,6 @@ dotnet add package ImageBox
 - `/ImageBox.Tests` — bUnit/xUnit tests
 - `/docs` — quick docs and setup notes
 
-## Workflows
-
-- **CI** (`.github/workflows/ci.yml`) — restore, build, test on pushes/PRs
-- **NuGet Publish** (`.github/workflows/nuget.yml`) — pack and publish on `v*` tags
-- **GitHub Pages** (`.github/workflows/pages.yml`) — deploys sample app to Pages
-
 ## Documentation
 
 - [Getting Started](docs/getting-started.md)
