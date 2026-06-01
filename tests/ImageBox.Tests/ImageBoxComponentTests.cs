@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace ImageBox.Tests;
 
-public class ImageBoxComponentTests : TestContext
+public class ImageBoxComponentTests : BunitContext
 {
     [Fact]
     public void RendersAllGalleryItems()
     {
         var images = CreateImages();
 
-        var cut = RenderComponent<global::ImageBox.Components.ImageBox>(parameters => parameters
+        var cut = Render<global::ImageBox.Components.ImageBox>(parameters => parameters
             .Add(p => p.Items, images));
 
         Assert.Equal(images.Count, cut.FindAll(".imagebox-card").Count);
@@ -22,7 +22,7 @@ public class ImageBoxComponentTests : TestContext
     {
         var images = CreateImages();
 
-        var cut = RenderComponent<global::ImageBox.Components.ImageBox>(parameters => parameters
+        var cut = Render<global::ImageBox.Components.ImageBox>(parameters => parameters
             .Add(p => p.Items, images));
 
         cut.FindAll(".imagebox-card")[0].Click();

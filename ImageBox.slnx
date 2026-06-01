@@ -1,11 +1,17 @@
 <Solution>
-  <Project Path="samples/ImageBox.Sample/ImageBox.Sample.csproj">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
-  <Project Path="src/ImageBox/ImageBox.csproj">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
-  <Project Path="tests/ImageBox.Tests/ImageBox.Tests.csproj">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
+  <Folder Name="/samples/">
+    <Project Path="samples/ImageBox.Sample/ImageBox.Sample.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/ImageBox/ImageBox.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ImageBox.Tests/ImageBox.Tests.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+  </Folder>
 </Solution>

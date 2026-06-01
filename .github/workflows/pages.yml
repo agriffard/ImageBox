@@ -27,7 +27,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Publish sample app
-        run: dotnet publish ImageBox.Sample/ImageBox.Sample.csproj -c Release -o dist
+        run: dotnet publish samples/ImageBox.Sample/ImageBox.Sample.csproj -c Release -o dist
 
       - name: Configure base path
         run: sed -i 's#<base href="/" />#<base href="/ImageBox/" />#' dist/wwwroot/index.html
