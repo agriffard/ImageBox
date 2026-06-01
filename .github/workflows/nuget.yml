@@ -16,10 +16,10 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore
-        run: dotnet restore ImageBox/ImageBox.csproj
+        run: dotnet restore src/ImageBox/ImageBox.csproj
 
       - name: Pack
-        run: dotnet pack ImageBox/ImageBox.csproj --configuration Release --no-restore --output ./artifacts
+        run: dotnet pack src/ImageBox/ImageBox.csproj --configuration Release --no-restore --output ./artifacts
 
       - name: Push to NuGet
         if: ${{ secrets.NUGET_API_KEY != '' }}

@@ -15,7 +15,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore
-        run: dotnet restore ImageBox.slnx
+        run: dotnet restore src/ImageBox/ImageBox.csproj && dotnet restore samples/ImageBox.Sample/ImageBox.Sample.csproj && dotnet restore tests/ImageBox.Tests/ImageBox.Tests.csproj
 
       - name: Build
         run: dotnet build ImageBox.slnx --configuration Release --no-restore

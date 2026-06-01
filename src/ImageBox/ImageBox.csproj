@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageId>ImageBox</PackageId>
-    <Version>0.1.0</Version>
     <Authors>agriffard</Authors>
     <Description>ImageBox — Gallery + Lightbox — responsive masonry grid with a zoomable, keyboard-navigable lightbox for Blazor.</Description>
     <PackageTags>blazor;gallery;lightbox;masonry;image</PackageTags>
@@ -24,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="/" Link="README.md" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="/" Link="README.md" />
   </ItemGroup>
 
 </Project>
